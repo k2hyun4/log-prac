@@ -21,6 +21,7 @@ public class LogAspect {
         logger.info("###Start request {}", joinPoint.getSignature().toShortString());
         Arrays.stream(joinPoint.getArgs())
                 .map(Object::toString)
+                .map(str -> "\t" + str)
                 .forEach(logger::info);
     }
 
@@ -30,12 +31,12 @@ public class LogAspect {
 
         if (returnValue == null) return;
 
-        logger.info("{}", returnValue.toString());
+        logger.info("\t{}", returnValue.toString());
     }
 
     @AfterThrowing(pointcut = "controller()", throwing = "e")
     public void logging2(JoinPoint joinPoint, Exception e) {
         logger.error("###Occured error in request {}", joinPoint.getSignature().toShortString());
-        logger.error(e.getMessage());
+        logger.error("\t{}", e.getMessage());
     }
 }
